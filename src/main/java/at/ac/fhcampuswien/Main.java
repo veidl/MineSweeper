@@ -14,6 +14,8 @@ public class Main extends Application {
         primaryStage.setTitle("Minesweeper");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+        //test
     }
 
     public static void main(String[] args) {
