@@ -9,13 +9,18 @@ import java.util.List;
 public class Cell extends Pane {
     private ImageView view;
     private List<Cell> neighbours;
-
+    private int state;
     // TODO add addtional variables you need. for state...
 
     public Cell(Image img, int state) {
         view = new ImageView(img);
+        this.state = state;
         getChildren().add(view);
         // TODO add stuff here if needed.
+    }
+
+    public int getState() {
+        return state;
     }
 
     public void setNeighbours(List<Cell> neighbours) {

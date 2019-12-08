@@ -19,6 +19,7 @@ public class Board {
     public static final int NUM_IMAGES = 13;
     public static final int NUM_MINES = 50;
     public static final int COVERED_MINE_CELL = 0;
+    public static final int MINE_CELL = 9;
 
     // Add further constants or let the cell keep track of its state.
 
@@ -38,22 +39,34 @@ public class Board {
         gameOver = false;
         loadImages();
 
-        Cell c = new Cell(images[COVERED_MINE_CELL],1);
-
-        cells[0][0] = c;
-
-
         // at the beginning every cell is covered
-        // TODO cover cells. complete the grid with calls to new Cell();
-
+        // cover cells. complete the grid with calls to new Cell();
+        initCells();
 
         // set neighbours for convenience
         // TODO compute all neighbours for a cell.
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                computeNeighbours(i, j);
+            }
+        }
 
         // then we place NUM_MINES on the board and adjust the neighbours (1,2,3,4,... if not a mine already)
         // TODO place random mines.
     }
 
+    // all cells are covered
+    private void initCells() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (getRandomNumberInts(10, 20) > 18) {
+                    cells[i][j] = new Cell(images[MINE_CELL], 2);
+                } else {
+                    cells[i][j] = new Cell(images[COVERED_MINE_CELL], 1);
+                }
+            }
+        }
+    }
 
     public boolean uncover(int row, int col) {
         // TODO uncover the cell, check if it is a bomb, if it is an empty cell you may! uncover all adjacent empty cells.
@@ -78,6 +91,12 @@ public class Board {
     public List<Cell> computeNeighbours(int x, int y) {
         List<Cell> neighbours = new ArrayList<>();
         // TODO get all the neighbours for a given cell. this means coping with mines at the borders.
+        Cell cell = cells[x][y];
+
+        if (cell.getState() == 1) {
+            neighbours.add(cell);
+        }
+
         return neighbours;
     }
 
