@@ -31,21 +31,23 @@ public class Controller {
         isActive = true;
         this.board = new Board();
         Cell[][] cells = this.board.getCells();
-        for(int i = 0; i < Board.ROWS; i++){
-            for(int j = 0; j < Board.COLS; j++) {
+        for (int i = 0; i < Board.ROWS; i++) {
+            for (int j = 0; j < Board.COLS; j++) {
                 // uncomment below as soon as the Cells are initialized by class Board.
-                // grid.add(cells[i][j], i, j);
+                grid.add(cells[i][j], i, j);
             }
         }
     }
+
     @FXML
-    public void update(MouseEvent event){
-        if(isActive) {
+    public void update(MouseEvent event) {
+        if (isActive) {
             if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
                 int row = (int) event.getX() / Board.CELL_SIZE;
                 int col = (int) event.getY() / Board.CELL_SIZE;
                 if (event.getButton() == MouseButton.PRIMARY) {
                     // TODO Uncover...
+                    System.out.println("test");
 
                 } else if (event.getButton() == MouseButton.SECONDARY) {
                     // TODO Mark...
@@ -53,7 +55,7 @@ public class Controller {
                 // TODO 1. Check if the player has already won
 
                 // TODO 2. If the game is still in active mode show used mine markers.
-                if(isActive)
+                if (isActive)
                     message.setText(" Marker: " + board.getMinesMarked() + "/" + Board.NUM_MINES);
             }
         }

@@ -18,6 +18,7 @@ public class Board {
     public static final int COLS = 25;
     public static final int NUM_IMAGES = 13;
     public static final int NUM_MINES = 50;
+    public static final int COVERED_MINE_CELL = 0;
 
     // Add further constants or let the cell keep track of its state.
 
@@ -36,8 +37,15 @@ public class Board {
         minesMarked = 0;
         gameOver = false;
         loadImages();
+
+        Cell c = new Cell(images[COVERED_MINE_CELL],1);
+
+        cells[0][0] = c;
+
+
         // at the beginning every cell is covered
         // TODO cover cells. complete the grid with calls to new Cell();
+
 
         // set neighbours for convenience
         // TODO compute all neighbours for a cell.
@@ -45,6 +53,7 @@ public class Board {
         // then we place NUM_MINES on the board and adjust the neighbours (1,2,3,4,... if not a mine already)
         // TODO place random mines.
     }
+
 
     public boolean uncover(int row, int col) {
         // TODO uncover the cell, check if it is a bomb, if it is an empty cell you may! uncover all adjacent empty cells.
@@ -80,7 +89,7 @@ public class Board {
         for (int i = 0; i < NUM_IMAGES; i++) {
             URL dict = getClass().getResource("pictures/");
             var path = dict.getPath() + i + ".png";
-            FileInputStream fis = null;
+            FileInputStream fis;
             try {
                 fis = new FileInputStream(path);
                 this.images[i] = new Image(fis);
