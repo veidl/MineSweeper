@@ -47,8 +47,7 @@ public class Controller {
                 int col = (int) event.getY() / Board.CELL_SIZE;
                 if (event.getButton() == MouseButton.PRIMARY) {
                     // TODO Uncover...
-                    System.out.println("test");
-
+                    board.uncover(row,col);
                 } else if (event.getButton() == MouseButton.SECONDARY) {
                     // TODO Mark...
                 }

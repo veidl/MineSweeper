@@ -2,12 +2,10 @@ package at.ac.fhcampuswien;
 
 import javafx.scene.image.Image;
 
-import javax.imageio.ImageIO;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +18,7 @@ public class Board {
     public static final int NUM_MINES = 50;
     public static final int COVERED_MINE_CELL = 0;
     public static final int MINE_CELL = 9;
+
 
     // Add further constants or let the cell keep track of its state.
 
@@ -42,6 +41,8 @@ public class Board {
         // at the beginning every cell is covered
         // cover cells. complete the grid with calls to new Cell();
         initCells();
+        initMines();
+
 
         // set neighbours for convenience
         // TODO compute all neighbours for a cell.
@@ -59,27 +60,50 @@ public class Board {
     private void initCells() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                if (getRandomNumberInts(10, 20) > 18) {
-                    cells[i][j] = new Cell(images[MINE_CELL], 2);
-                } else {
-                    cells[i][j] = new Cell(images[COVERED_MINE_CELL], 1);
-                }
+                cells[i][j] = new Cell(images[COVERED_MINE_CELL], 1);
             }
         }
     }
 
-    public boolean uncover(int row, int col) {
+    private void initMines() {
+        int rem = NUM_MINES;
+        while (rem >= 0) {
+            Cell c = cells[getRandomNumberInts(1, ROWS - 1)][getRandomNumberInts(1, COLS - 1)];
+            c.setState(2);
+            c.update(images[MINE_CELL]);
+            rem--;
+        }
+    }
+
+    public void uncover(int row, int col) {
         // TODO uncover the cell, check if it is a bomb, if it is an empty cell you may! uncover all adjacent empty cells.
-        return true; // could be a void function as well
+        Cell c = cells[row][col];
+        if (cells[row][col].getState() == 2) {
+            c.update(images[MINE_CELL]);
+        }
+
+        if (cells[row][col].getState() == 1) {
+            uncoverEmptyCells(c);
+        }
+
     }
 
     public boolean markCell(int row, int col) {
         // TODO mark the cell if it is not already marked.
+
+
         return true;
     }
 
     public void uncoverEmptyCells(Cell cell) {
         // TODO you may implement this function. Not a must. It's usually implemented by means of a recursive function.
+
+        List<Cell> neighbours = cell.getNeighbours();
+
+        for (Cell c : neighbours) {
+            c.update(images[5]);
+        }
+
     }
 
 
@@ -88,16 +112,24 @@ public class Board {
     }
 
 
-    public List<Cell> computeNeighbours(int x, int y) {
+    public void computeNeighbours(int x, int y) {
         List<Cell> neighbours = new ArrayList<>();
         // TODO get all the neighbours for a given cell. this means coping with mines at the borders.
         Cell cell = cells[x][y];
+        if(cell.getState() == 1 ){
+
+        }
+
+
 
         if (cell.getState() == 1) {
             neighbours.add(cell);
+            cell.setNeighbours(neighbours);
+
+
         }
 
-        return neighbours;
+
     }
 
     /**
