@@ -33,7 +33,6 @@ public class Controller {
         Cell[][] cells = this.board.getCells();
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
-                // uncomment below as soon as the Cells are initialized by class Board.
                 grid.add(cells[i][j], i, j);
             }
         }
@@ -47,9 +46,11 @@ public class Controller {
                 int col = (int) event.getY() / Board.CELL_SIZE;
                 if (event.getButton() == MouseButton.PRIMARY) {
                     // TODO Uncover...
-                    board.uncover(row,col);
+                    board.uncover(row, col);
+                    message.setText("TEST");
                 } else if (event.getButton() == MouseButton.SECONDARY) {
                     // TODO Mark...
+                    board.markCell(row, col);
                 }
                 // TODO 1. Check if the player has already won
 

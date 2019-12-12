@@ -9,9 +9,7 @@ import java.util.List;
 public class Cell extends Pane {
     private ImageView view;
     private List<Cell> neighbours;
-    private boolean isMine;
-    private boolean isFlag;
-    private boolean isOpened;
+
     private int state;
 
 
@@ -20,6 +18,8 @@ public class Cell extends Pane {
     public Cell(Image img, int state) {
         view = new ImageView(img);
         this.state = state;
+
+
         getChildren().add(view);
 
         // TODO add stuff here if needed.
@@ -35,6 +35,9 @@ public class Cell extends Pane {
 
     }
 
+    public void setMine(int state) {
+        this.state = state;
+    }
 
     public void setNeighbours(List<Cell> neighbours) {
         this.neighbours = neighbours;
