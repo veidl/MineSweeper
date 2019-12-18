@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class Controller {
 
     public Label difficult;
+    public MenuButton difficulty;
     // Model
     private Board board;
     // private
@@ -27,10 +29,12 @@ public class Controller {
 
     private int mines = 50;
 
-
+    /**
+     * initialise the cells for the board
+     * @throws IOException
+     */
     @FXML
     public void initialize() throws IOException {
-
         Board.NUM_MINES = mines;
 
         isActive = true;
@@ -44,6 +48,12 @@ public class Controller {
         message.setText("Good Luck!");
     }
 
+    /**
+     * calculates x, y coordinates for pressing a cell
+     * uncovers / marks a cell given it's click
+     * also checks if the game is already over
+     * @param event
+     */
     @FXML
     public void update(MouseEvent event) {
         if (isActive) {
@@ -69,12 +79,22 @@ public class Controller {
         }
     }
 
+    /**
+     * resets the grid
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     public void restart(ActionEvent actionEvent) throws IOException {
         this.grid.getChildren().clear();
         initialize();
     }
 
+    /**
+     * used for the difficulty (mines increase)
+     * @param actionEvent
+     * @throws IOException
+     */
     public void easy(ActionEvent actionEvent) throws IOException {
         this.mines = 50;
         this.difficult.setText("easy mode");

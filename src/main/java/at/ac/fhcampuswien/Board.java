@@ -27,6 +27,7 @@ public class Board {
     private static final int FLAG = 11;
 
     // states
+    private static final int EMPTY = 0;
     private static final int COVERED = 1;
     private static final int UNCOVERED = 3;
     private static final int MARKED = 4;
@@ -60,6 +61,10 @@ public class Board {
     }
 
     //init cells -> all covered
+
+    /**
+     * initiates cells with cover image, no further states are set
+     */
     private void initCells() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -68,17 +73,26 @@ public class Board {
         }
     }
 
+    /**
+     * initiates mines with the proper mine status
+     */
     private void initMines() {
         // place them in a random position
         int rem = NUM_MINES;
         while (rem > 0) {
             Cell c = cells[getRandomNumberInts(0, ROWS - 1)][getRandomNumberInts(0, COLS - 1)];
             c.setMine(true);
-            //c.update(images[MINE_CELL]);
+            c.update(images[MINE_CELL]);
             rem--;
         }
     }
 
+    /**
+     * calculates nearby mines for a given cell neighbours
+     * @param row (x coordinate)
+     * @param col (y coordinate)
+     * @return a sum of mines
+     */
     private int computeMineNeighbour(int row, int col) {
         int mines = 0;
         for (Cell c : cells[row][col].getNeighbours()) {
@@ -89,6 +103,13 @@ public class Board {
         return mines;
     }
 
+    /**
+     * checks if its a mine, if so it sets gameOver and uncovers all cells.
+     * If its an empty cell it will uncover all empty cells within range
+     * if its near an mine it will just uncover the cell
+     * @param row
+     * @param col
+     */
     public void uncover(int row, int col) {
         Cell c = cells[row][col];
 
@@ -110,6 +131,11 @@ public class Board {
         }
     }
 
+    /**
+     * marks a cell to help find mines
+     * @param row (x coordinate)
+     * @param col (y coordinate)
+     */
     public void markCell(int row, int col) {
 
         Cell cell = cells[row][col];
@@ -131,31 +157,37 @@ public class Board {
 
     }
 
-    public void uncoverEmptyCells(int x, int y) {
-        // FLOOD FILL
-        // https://de.wikipedia.org/wiki/Floodfill
-
+    /**
+     * using flood fill to uncover empty cells https://de.wikipedia.org/wiki/Floodfill
+     * it will check all horizontal paths until a cell is already uncovered or a mine is nearby
+     * @param row (x coordinate)
+     * @param col (y coordinate)
+     */
+    public void uncoverEmptyCells(int row, int col) {
         // check borders
-        if (x < 0 || x >= COLS || y < 0 || y >= ROWS)
+        if (row < 0 || row >= COLS || col < 0 || col >= ROWS)
             return;
 
         // parameters in case of endless loop
-        if (cells[x][y].getState() == UNCOVERED || computeMineNeighbour(x, y) != 0)
+        if (cells[row][col].getState() == UNCOVERED || computeMineNeighbour(row, col) != 0)
             return;
 
         // Replace the image at (x, y)
-        cells[x][y].update(images[0]);
-        cells[x][y].setState(UNCOVERED);
+        cells[row][col].update(images[EMPTY]);
+        cells[row][col].setState(UNCOVERED);
         cellsUncovered++;
 
         // redo for all positions arround me
-        uncoverEmptyCells(x + 1, y);
-        uncoverEmptyCells(x, y + 1);
-        uncoverEmptyCells(x - 1, y);
-        uncoverEmptyCells(x, y - 1);
+        uncoverEmptyCells(row + 1, col);
+        uncoverEmptyCells(row, col + 1);
+        uncoverEmptyCells(row - 1, col);
+        uncoverEmptyCells(row, col - 1);
 
     }
 
+    /**
+     * if the game is over all cells will be uncovered
+     */
     private void uncoverAllCells() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -169,10 +201,17 @@ public class Board {
         }
     }
 
+    /**
+     * calculates all neighbours for a given cell
+     * @param x
+     * @param y
+     * @return a list of Cells per Cell
+     */
     private List<Cell> computeNeighbours(int x, int y) {
         List<Cell> neighbours = new ArrayList<>();
 
         // check all sites arround you for neighbours
+        // celestial coordinates (S,SE,E,SE etc...)
         if ((x - 1) >= 0 && (y - 1) >= 0) {
             neighbours.add(cells[x - 1][y - 1]);
         }
