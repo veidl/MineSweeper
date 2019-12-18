@@ -24,7 +24,7 @@ public class Controller {
     @FXML
     private Button restart;
 
-    private int mines = 5;
+    private int mines = 50;
 
     @FXML
     public void initialize() throws IOException {

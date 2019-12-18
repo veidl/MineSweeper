@@ -14,8 +14,8 @@ public class Board {
 
     // board
     static final int CELL_SIZE = 15;
-    static final int ROWS = 4;
-    static final int COLS = 4;
+    static final int ROWS = 25;
+    static final int COLS = 25;
     // want to change for dificulty
     static int NUM_MINES;
 
@@ -77,7 +77,7 @@ public class Board {
         while (rem > 0) {
             Cell c = cells[getRandomNumberInts(0, ROWS - 1)][getRandomNumberInts(0, COLS - 1)];
             c.setMine(true);
-            c.update(images[MINE_CELL]);
+            //c.update(images[MINE_CELL]);
             rem--;
         }
     }
