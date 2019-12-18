@@ -30,12 +30,8 @@ public class Main extends Application {
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
         fadeOut.setCycleCount(1);
-
         fadeIn.play();
-
-        fadeIn.setOnFinished(event -> {
-            fadeOut.play();
-        });
+        fadeIn.setOnFinished(event -> fadeOut.play());
 
         fadeOut.setOnFinished(event -> {
             try {
@@ -48,8 +44,6 @@ public class Main extends Application {
                 e.printStackTrace();
             }
         });
-
-
     }
 
     public static void main(String[] args) {

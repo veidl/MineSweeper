@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class Controller {
 
+    public Label difficult;
     // Model
     private Board board;
     // private
@@ -25,6 +26,7 @@ public class Controller {
     private Button restart;
 
     private int mines = 50;
+
 
     @FXML
     public void initialize() throws IOException {
@@ -58,35 +60,42 @@ public class Controller {
                     isActive = false;
                 }
                 if (board.getCellsUncovered() == (Board.ROWS * Board.COLS - Board.NUM_MINES)) {
-                    message.setText("YOU WON");
+                    message.setText("GG WP - YOU WON");
                     isActive = false;
                 }
                 if (isActive)
                     message.setText(" Marker: " + board.getMinesMarked() + "/" + Board.NUM_MINES);
             }
-
-            System.out.println(board.getCellsUncovered());
         }
     }
 
     @FXML
     public void restart(ActionEvent actionEvent) throws IOException {
-        grid.getChildren().clear();
+        this.grid.getChildren().clear();
         initialize();
     }
 
     public void easy(ActionEvent actionEvent) throws IOException {
         this.mines = 50;
+        this.difficult.setText("easy mode");
         restart(actionEvent);
     }
 
     public void medium(ActionEvent actionEvent) throws IOException {
         this.mines = 100;
+        this.difficult.setText("medium mode");
         restart(actionEvent);
     }
 
     public void hardcore(ActionEvent actionEvent) throws IOException {
         this.mines = 150;
+        this.difficult.setText("hardcore mode");
+        restart(actionEvent);
+    }
+
+    public void forTesting(ActionEvent actionEvent) throws IOException {
+        this.mines = 1;
+        this.difficult.setText("testing mode");
         restart(actionEvent);
     }
 }

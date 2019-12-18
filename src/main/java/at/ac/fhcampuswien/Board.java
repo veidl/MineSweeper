@@ -16,7 +16,7 @@ public class Board {
     static final int CELL_SIZE = 15;
     static final int ROWS = 25;
     static final int COLS = 25;
-    // want to change for dificulty
+    // not final -> change of difficulty
     static int NUM_MINES;
 
     // images
@@ -32,10 +32,8 @@ public class Board {
     private static final int MARKED = 4;
     private static final int UNMARKED = 5;
 
-
     // Add further constants or let the cell keep track of its state.
-
-    private Cell cells[][];
+    private Cell[][] cells;
     private Image[] images;
     private int cellsUncovered;
     private int minesMarked;
@@ -58,7 +56,6 @@ public class Board {
                 cells[i][j].setNeighbours(computeNeighbours(i, j));
             }
         }
-
         initMines();
     }
 
@@ -106,7 +103,7 @@ public class Board {
         int minesCount = computeMineNeighbour(row, col);
         if (minesCount == 0) {
             uncoverEmptyCells(row, col);
-        } else if (c.getState() == COVERED) {
+        } else if (c.getState() == COVERED || c.getState() == MARKED) {
             c.update(images[minesCount]);
             c.setState(UNCOVERED);
             cellsUncovered++;
@@ -153,8 +150,8 @@ public class Board {
 
         // redo for all positions arround me
         uncoverEmptyCells(x + 1, y);
-        uncoverEmptyCells(x - 1, y);
         uncoverEmptyCells(x, y + 1);
+        uncoverEmptyCells(x - 1, y);
         uncoverEmptyCells(x, y - 1);
 
     }
@@ -176,8 +173,6 @@ public class Board {
         List<Cell> neighbours = new ArrayList<>();
 
         // check all sites arround you for neighbours
-
-
         if ((x - 1) >= 0 && (y - 1) >= 0) {
             neighbours.add(cells[x - 1][y - 1]);
         }
@@ -215,7 +210,7 @@ public class Board {
     /**
      * Loads the given images into memory. Of course you may use your own images and layouts.
      */
-    private void loadImages() throws IOException {
+    private void loadImages() {
         images = new Image[NUM_IMAGES];
         for (int i = 0; i < NUM_IMAGES; i++) {
             URL dict = getClass().getResource("pictures/");

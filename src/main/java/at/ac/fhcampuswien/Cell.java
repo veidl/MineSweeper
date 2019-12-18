@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class Cell extends Pane {
     private ImageView view;
     private List<Cell> neighbours;
