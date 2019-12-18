@@ -9,22 +9,18 @@ import java.util.List;
 public class Cell extends Pane {
     private ImageView view;
     private List<Cell> neighbours;
-
+    // neded boolean for mine cause of the flag
+    private boolean isMine;
     private int state;
-
-
-    // TODO add addtional variables you need. for state...
 
     public Cell(Image img, int state) {
         view = new ImageView(img);
         this.state = state;
 
-
+        this.isMine = false;
         getChildren().add(view);
 
-        // TODO add stuff here if needed.
     }
-
 
     public int getState() {
         return state;
@@ -32,11 +28,14 @@ public class Cell extends Pane {
 
     public void setState(int s) {
         this.state = s;
-
     }
 
-    public void setMine(int state) {
-        this.state = state;
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
     }
 
     public void setNeighbours(List<Cell> neighbours) {

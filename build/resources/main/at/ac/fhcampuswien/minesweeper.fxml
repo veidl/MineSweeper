@@ -2,17 +2,32 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.Controller">
-   <center>
-      <GridPane fx:id="grid" onMouseClicked="#update" BorderPane.alignment="CENTER" />
-   </center>
-   <top>
-      <Button fx:id="restart" mnemonicParsing="false" onAction="#restart" text="Restart" BorderPane.alignment="CENTER" />
-   </top>
-   <bottom>
-      <Label fx:id="message" alignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="Good Luck!" textAlignment="CENTER" BorderPane.alignment="CENTER" />
-   </bottom>
-</BorderPane>
+
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<AnchorPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.Controller">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity">
+          <center>
+              <GridPane fx:id="grid" onMouseClicked="#update" BorderPane.alignment="CENTER" />
+          </center>
+          <top>
+              <Button fx:id="restart" mnemonicParsing="false" onAction="#restart" text="Restart" BorderPane.alignment="CENTER" />
+          </top>
+          <bottom>
+              <Label fx:id="message" alignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="Good Luck!" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+          </bottom>
+      </BorderPane>
+       <MenuButton fx:id="difficulty" mnemonicParsing="false" text="difficulty">
+           <items>
+               <MenuItem mnemonicParsing="false" onAction="#easy" text="easy" />
+               <MenuItem mnemonicParsing="false" onAction="#medium" text="medium" />
+               <MenuItem mnemonicParsing="false" onAction="#hardcore" text="hardcore" />
+           </items>
+       </MenuButton>
+   </children>
+</AnchorPane>

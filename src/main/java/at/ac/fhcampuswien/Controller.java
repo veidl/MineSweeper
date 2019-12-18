@@ -14,10 +14,8 @@ public class Controller {
 
     // Model
     private Board board;
-
     // private
     private boolean isActive;
-
     // View Fields
     @FXML
     private Label message;
@@ -26,8 +24,13 @@ public class Controller {
     @FXML
     private Button restart;
 
+    private int mines = 5;
+
     @FXML
     public void initialize() throws IOException {
+
+        Board.NUM_MINES = mines;
+
         isActive = true;
         this.board = new Board();
         Cell[][] cells = this.board.getCells();
@@ -36,6 +39,7 @@ public class Controller {
                 grid.add(cells[i][j], i, j);
             }
         }
+        message.setText("Good Luck!");
     }
 
     @FXML
@@ -45,19 +49,23 @@ public class Controller {
                 int row = (int) event.getX() / Board.CELL_SIZE;
                 int col = (int) event.getY() / Board.CELL_SIZE;
                 if (event.getButton() == MouseButton.PRIMARY) {
-                    // TODO Uncover...
                     board.uncover(row, col);
-                    message.setText("TEST");
                 } else if (event.getButton() == MouseButton.SECONDARY) {
-                    // TODO Mark...
                     board.markCell(row, col);
                 }
-                // TODO 1. Check if the player has already won
-
-                // TODO 2. If the game is still in active mode show used mine markers.
+                if (board.isGameOver()) {
+                    message.setText("YOU LOST THE GAME");
+                    isActive = false;
+                }
+                if (board.getCellsUncovered() == (Board.ROWS * Board.COLS - Board.NUM_MINES)) {
+                    message.setText("YOU WON");
+                    isActive = false;
+                }
                 if (isActive)
                     message.setText(" Marker: " + board.getMinesMarked() + "/" + Board.NUM_MINES);
             }
+
+            System.out.println(board.getCellsUncovered());
         }
     }
 
@@ -65,5 +73,20 @@ public class Controller {
     public void restart(ActionEvent actionEvent) throws IOException {
         grid.getChildren().clear();
         initialize();
+    }
+
+    public void easy(ActionEvent actionEvent) throws IOException {
+        this.mines = 50;
+        restart(actionEvent);
+    }
+
+    public void medium(ActionEvent actionEvent) throws IOException {
+        this.mines = 100;
+        restart(actionEvent);
+    }
+
+    public void hardcore(ActionEvent actionEvent) throws IOException {
+        this.mines = 150;
+        restart(actionEvent);
     }
 }
