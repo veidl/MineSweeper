@@ -16,9 +16,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        /**
-         * fade transitions just for fun
-         */
         StackPane stackPane = FXMLLoader.load((getClass().getResource("intro.fxml")));
 
         primaryStage.setScene(new Scene(stackPane));

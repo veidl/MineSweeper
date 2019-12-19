@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,32 +8,30 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
 public class Controller {
-
-    public Label difficult;
-    public MenuButton difficulty;
     // Model
     private Board board;
-    // private
     private boolean isActive;
-    // View Fields
+
     @FXML
     private Label message;
     @FXML
     private GridPane grid;
     @FXML
     private Button restart;
+    @FXML
+    public Label gameDifficulty;
+    @FXML
+    public MenuButton difficulty;
 
+    // standard value of mines
     private int mines = 50;
 
     /**
      * initialise the cells for the board
-     * @throws IOException
      */
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() {
         Board.NUM_MINES = mines;
 
         isActive = true;
@@ -52,7 +49,8 @@ public class Controller {
      * calculates x, y coordinates for pressing a cell
      * uncovers / marks a cell given it's click
      * also checks if the game is already over
-     * @param event
+     *
+     * @param event (onMouseClick)
      */
     @FXML
     public void update(MouseEvent event) {
@@ -81,41 +79,41 @@ public class Controller {
 
     /**
      * resets the grid
-     * @param actionEvent
-     * @throws IOException
      */
     @FXML
-    public void restart(ActionEvent actionEvent) throws IOException {
+    public void restart() {
         this.grid.getChildren().clear();
         initialize();
     }
 
     /**
      * used for the difficulty (mines increase)
-     * @param actionEvent
-     * @throws IOException
      */
-    public void easy(ActionEvent actionEvent) throws IOException {
+    public void easy() {
         this.mines = 50;
-        this.difficult.setText("easy mode");
-        restart(actionEvent);
+        board.setShowMines(false);
+        this.gameDifficulty.setText("easy mode");
+        restart();
     }
 
-    public void medium(ActionEvent actionEvent) throws IOException {
+    public void medium() {
         this.mines = 100;
-        this.difficult.setText("medium mode");
-        restart(actionEvent);
+        board.setShowMines(false);
+        this.gameDifficulty.setText("medium mode");
+        restart();
     }
 
-    public void hardcore(ActionEvent actionEvent) throws IOException {
+    public void hardcore() {
         this.mines = 150;
-        this.difficult.setText("hardcore mode");
-        restart(actionEvent);
+        board.setShowMines(false);
+        this.gameDifficulty.setText("hardcore mode");
+        restart();
     }
 
-    public void forTesting(ActionEvent actionEvent) throws IOException {
+    public void forTesting() {
         this.mines = 1;
-        this.difficult.setText("testing mode");
-        restart(actionEvent);
+        board.setShowMines(true);
+        this.gameDifficulty.setText("testing mode");
+        restart();
     }
 }

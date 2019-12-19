@@ -4,12 +4,12 @@ import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("WeakerAccess")
 public class Board {
 
     // board
@@ -39,11 +39,13 @@ public class Board {
     private int cellsUncovered;
     private int minesMarked;
     private boolean gameOver;
+    private boolean showMines;
+
 
     /**
      * Constructor preparing the game. Playing a new game means creating a new Board.
      */
-    public Board() throws IOException {
+    public Board() {
         cells = new Cell[ROWS][COLS];
         cellsUncovered = 0;
         minesMarked = 0;
@@ -60,7 +62,6 @@ public class Board {
         initMines();
     }
 
-    //init cells -> all covered
 
     /**
      * initiates cells with cover image, no further states are set
@@ -68,6 +69,7 @@ public class Board {
     private void initCells() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
+                //init cells -> all covered
                 cells[i][j] = new Cell(images[COVERED_MINE_CELL], COVERED);
             }
         }
@@ -77,18 +79,21 @@ public class Board {
      * initiates mines with the proper mine status
      */
     private void initMines() {
-        // place them in a random position
         int rem = NUM_MINES;
         while (rem > 0) {
+            // place them in a random position
             Cell c = cells[getRandomNumberInts(0, ROWS - 1)][getRandomNumberInts(0, COLS - 1)];
             c.setMine(true);
-            c.update(images[MINE_CELL]);
+            if (isShowMines()){
+                c.update(images[MINE_CELL]);
+            }
             rem--;
         }
     }
 
     /**
      * calculates nearby mines for a given cell neighbours
+     *
      * @param row (x coordinate)
      * @param col (y coordinate)
      * @return a sum of mines
@@ -107,8 +112,9 @@ public class Board {
      * checks if its a mine, if so it sets gameOver and uncovers all cells.
      * If its an empty cell it will uncover all empty cells within range
      * if its near an mine it will just uncover the cell
-     * @param row
-     * @param col
+     *
+     * @param row (x coordinate)
+     * @param col (y coordinate)
      */
     public void uncover(int row, int col) {
         Cell c = cells[row][col];
@@ -133,6 +139,7 @@ public class Board {
 
     /**
      * marks a cell to help find mines
+     *
      * @param row (x coordinate)
      * @param col (y coordinate)
      */
@@ -160,6 +167,7 @@ public class Board {
     /**
      * using flood fill to uncover empty cells https://de.wikipedia.org/wiki/Floodfill
      * it will check all horizontal paths until a cell is already uncovered or a mine is nearby
+     *
      * @param row (x coordinate)
      * @param col (y coordinate)
      */
@@ -202,46 +210,45 @@ public class Board {
     }
 
     /**
-     * calculates all neighbours for a given cell
-     * @param x
-     * @param y
+     * check all sites around a cell for neighbours; celestial coordinates (S,SE,E,SE etc...)
+     *
+     * @param row (x coordinate)
+     * @param col (y coordinate)
      * @return a list of Cells per Cell
      */
-    private List<Cell> computeNeighbours(int x, int y) {
+    private List<Cell> computeNeighbours(int row, int col) {
         List<Cell> neighbours = new ArrayList<>();
 
-        // check all sites arround you for neighbours
-        // celestial coordinates (S,SE,E,SE etc...)
-        if ((x - 1) >= 0 && (y - 1) >= 0) {
-            neighbours.add(cells[x - 1][y - 1]);
+        if ((row - 1) >= 0 && (col - 1) >= 0) {
+            neighbours.add(cells[row - 1][col - 1]);
         }
 
-        if ((y - 1) >= 0) {
-            neighbours.add(cells[x][y - 1]);
+        if ((col - 1) >= 0) {
+            neighbours.add(cells[row][col - 1]);
         }
 
-        if ((x + 1) < COLS && y - 1 >= 0) {
-            neighbours.add(cells[x + 1][y - 1]);
+        if ((row + 1) < COLS && col - 1 >= 0) {
+            neighbours.add(cells[row + 1][col - 1]);
         }
 
-        if ((x + 1) < COLS) {
-            neighbours.add(cells[x + 1][y]);
+        if ((row + 1) < COLS) {
+            neighbours.add(cells[row + 1][col]);
         }
 
-        if ((x + 1) < COLS && (y + 1) < ROWS) {
-            neighbours.add(cells[x + 1][y + 1]);
+        if ((row + 1) < COLS && (col + 1) < ROWS) {
+            neighbours.add(cells[row + 1][col + 1]);
         }
 
-        if ((y + 1) < ROWS) {
-            neighbours.add(cells[x][y + 1]);
+        if ((col + 1) < ROWS) {
+            neighbours.add(cells[row][col + 1]);
         }
 
-        if ((y + 1) < ROWS && (x - 1) >= 0) {
-            neighbours.add(cells[x - 1][y + 1]);
+        if ((col + 1) < ROWS && (row - 1) >= 0) {
+            neighbours.add(cells[row - 1][col + 1]);
         }
 
-        if ((x - 1) >= 0) {
-            neighbours.add(cells[x - 1][y]);
+        if ((row - 1) >= 0) {
+            neighbours.add(cells[row - 1][col]);
         }
         return neighbours;
     }
@@ -291,5 +298,14 @@ public class Board {
     public int getCellsUncovered() {
         return cellsUncovered;
     }
+
+    public boolean isShowMines() {
+        return showMines;
+    }
+
+    public void setShowMines(boolean showMines) {
+        this.showMines = showMines;
+    }
+
 
 }
