@@ -12,6 +12,7 @@ public class Controller {
     // Model
     private Board board;
     private boolean isActive;
+    private boolean showMines;
 
     @FXML
     private Label message;
@@ -35,7 +36,7 @@ public class Controller {
         Board.NUM_MINES = mines;
 
         isActive = true;
-        this.board = new Board();
+        this.board = new Board(showMines);
         Cell[][] cells = this.board.getCells();
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
@@ -91,28 +92,28 @@ public class Controller {
      */
     public void easy() {
         this.mines = 50;
-        board.setShowMines(false);
+        this.showMines = false;
         this.gameDifficulty.setText("easy mode");
         restart();
     }
 
     public void medium() {
         this.mines = 100;
-        board.setShowMines(false);
+        this.showMines = false;
         this.gameDifficulty.setText("medium mode");
         restart();
     }
 
     public void hardcore() {
         this.mines = 150;
-        board.setShowMines(false);
+        this.showMines = false;
         this.gameDifficulty.setText("hardcore mode");
         restart();
     }
 
     public void forTesting() {
         this.mines = 1;
-        board.setShowMines(true);
+        this.showMines = true;
         this.gameDifficulty.setText("testing mode");
         restart();
     }

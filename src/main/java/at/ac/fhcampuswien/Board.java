@@ -45,11 +45,12 @@ public class Board {
     /**
      * Constructor preparing the game. Playing a new game means creating a new Board.
      */
-    public Board() {
+    public Board(boolean showMines) {
         cells = new Cell[ROWS][COLS];
         cellsUncovered = 0;
         minesMarked = 0;
         gameOver = false;
+        this.showMines = showMines;
         loadImages();
 
         initCells();
@@ -84,7 +85,7 @@ public class Board {
             // place them in a random position
             Cell c = cells[getRandomNumberInts(0, ROWS - 1)][getRandomNumberInts(0, COLS - 1)];
             c.setMine(true);
-            if (isShowMines()){
+            if (isShowMines()) {
                 c.update(images[MINE_CELL]);
             }
             rem--;
